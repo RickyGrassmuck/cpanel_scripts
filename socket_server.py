@@ -4,6 +4,27 @@ import socket
 import sys, getopt
 from thread import *
 
+#Function for handling connections. This will be used to create threads
+def clientthread(conn, port):
+    HOSTNAME = socket.gethostname()
+
+    #Sending message to connected client
+    conn.send('Connected to ' + HOSTNAME + ' on port ' + port + '. Type something and hit enter\n') #send only takes string
+
+    #infinite loop so that function do not terminate and thread do not end.
+    while True:
+
+        #Receiving from client
+        data = conn.recv(1024)
+        reply = 'OK...' + data
+        if not data:
+            break
+
+        conn.sendall(reply)
+
+    #came out of loop
+    conn.close()
+
 def main(argv):
 	HOST = ''   # Symbolic name meaning all available interfaces
 	PORT = '' # Arbitrary non-privileged port
@@ -46,28 +67,9 @@ def main(argv):
 		print 'Connected with ' + addr[0] + ':' + str(addr[1])
 
 		#start new thread takes 1st argument as a function name to be run, second is the tuple of arguments to the function.
-		start_new_thread(clientthread ,(conn,))
-
-		s.close()
+		start_new_thread(clientthread ,(conn, str(PORT),))
+        s.close()
 		
-#Function for handling connections. This will be used to create threads
-def clientthread(conn):
-    #Sending message to connected client
-    conn.send('Connected to gains.nelsoweb.com on port PORT. Type something and hit enter\n') #send only takes string
-
-    #infinite loop so that function do not terminate and thread do not end.
-    while True:
-
-        #Receiving from client
-        data = conn.recv(1024)
-        reply = 'OK...' + data
-        if not data:
-            break
-
-        conn.sendall(reply)
-
-    #came out of loop
-    conn.close()
 
 if __name__ == "__main__":
    main(sys.argv[1:])
