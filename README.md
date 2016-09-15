@@ -1,2 +1,2 @@
-# useful_scripts
+# cpanel_scripts
 Repo to hold useful scripts
