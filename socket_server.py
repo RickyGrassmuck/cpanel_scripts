@@ -3,7 +3,15 @@ from __future__ import print_function
 import socket
 import sys
 import getopt
-from thread import *
+
+
+if sys.version_info > (3, 0):
+    # Python 3 code in this block
+    from _thread import *
+
+else:
+    # Python 2 code in this block
+    from thread import *
 
 
 def clientthread(conn, port):
@@ -39,7 +47,7 @@ def main(argv):
 
         elif opt in ("-p", "--port"):
 
-            if isinstance(int(arg), (int, long)):
+            if isinstance(int(arg), int):
                 port = int(arg)
 
         else:
