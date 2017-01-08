@@ -16,8 +16,8 @@ else:
 
 def clientthread(conn, port):
     hostname = socket.gethostname()
-
-    conn.send('Connected to {host} on port {port} Type something and hit enter\n'.format(host=hostname, port=port))
+    connected_message = 'Connected to {host} on port {port} Type something and hit enter\n'.format(host=hostname, port=port)
+    conn.send(bytes(connected_message))
 
     while True:
         data = conn.recv(1024)
